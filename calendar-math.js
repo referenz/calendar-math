@@ -52,7 +52,5 @@ function intervalToPast(damalsObj) {
     }
 
     const resultstring = result.length !== 0 ? result.reduce((acc, cur) => acc + ", " + cur) : "heute"
-
-    document.getElementById("zeit1").textContent = resultstring
-    document.getElementsByTagName("title")[0].textContent = resultstring
+    return resultstring
   }
