@@ -1,4 +1,4 @@
-function intervalToNow(damalsObj) {
+function intervalToPast(damalsObj) {
     if (!(damalsObj instanceof Date)) return
     const jetztObj = new Date()
   
@@ -28,4 +28,31 @@ function intervalToNow(damalsObj) {
   
     return [intervalYears, intervalMonths, intervalDays]
   }
-  
+
+  function intervalToPastString(damalsObj) {
+    const [jahre, monate, tage] = intervalToPast(damalsObj)
+
+    let result = []
+    if (jahre > 1) {
+      result.push(`${jahre} Jahre`)
+    } else if (jahre === 1) {
+      result.push("1 Jahr")
+    }
+
+    if (monate > 1) {
+      result.push(`${monate} Monate`)
+    } else if (monate === 1) {
+      result.push("1 Monat")
+    }
+
+    if (tage > 1) {
+      result.push(`${tage} Tage`)
+    } else if (tage === 1) {
+      result.push("1 Tag")
+    }
+
+    const resultstring = result.length !== 0 ? result.reduce((acc, cur) => acc + ", " + cur) : "heute"
+
+    document.getElementById("zeit1").textContent = resultstring
+    document.getElementsByTagName("title")[0].textContent = resultstring
+  }
