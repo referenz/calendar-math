@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="de">
-    <head>
-        <title>Calender-Math-Test</title>
-        <script src="calendar-math.js"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", () =>  document.getElementsByTagName('h1')[0].innerHTML = intervalToPastString(new Date(2007, 10, 10)));
-        </script>    
-    </head>
-    <body>
-        <h1></h1>
-    </body>
+  <head>
+    <title>Calender-Math-Test</title>
+    <script src="calendar-math.js"></script>
+    <script>
+      document.addEventListener(
+        "DOMContentLoaded",
+        () => (document.getElementsByTagName("h1")[0].innerHTML = intervalToPastString(new Date(2007, 10, 10)))
+      );
+
+      /* deliberate TypeError */
+      //document.addEventListener("DOMContentLoaded", () =>  document.getElementsByTagName('h1')[0].innerHTML = intervalToPastString('2010-02-05'));
+    </script>
+  </head>
+  <body>
+    <h1></h1>
+  </body>
 </html>

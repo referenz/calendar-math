@@ -1,5 +1,5 @@
 function intervalToPast(damalsObj) {
-    if (!(damalsObj instanceof Date)) return
+    if (!(damalsObj instanceof Date)) throw new TypeError("Needs to be object of type 'Date'")
     const jetztObj = new Date()
   
     const jetzt = { year: jetztObj.getFullYear(), month: jetztObj.getMonth() + 1, day: jetztObj.getDate() }
@@ -29,7 +29,7 @@ function intervalToPast(damalsObj) {
     return [intervalYears, intervalMonths, intervalDays]
   }
 
-  function intervalToPastString(damalsObj) {
+function intervalToPastString(damalsObj) {
     const [jahre, monate, tage] = intervalToPast(damalsObj)
 
     let result = []
