@@ -2,8 +2,9 @@
 <html lang="de">
   <head>
     <title>Calender-Math-Test</title>
-    <script src="calendar-math.js"></script>
-    <script>
+    <script type="module">
+      import { intervalToPastString } from './calendar-math.js';
+
       document.addEventListener(
         "DOMContentLoaded",
         () => (document.getElementsByTagName("h1")[0].innerHTML = intervalToPastString(new Date(2007, 10, 10)))

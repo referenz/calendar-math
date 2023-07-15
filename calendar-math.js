@@ -1,10 +1,10 @@
 function intervalToPast(damalsObj) {
     if (!(damalsObj instanceof Date)) throw new TypeError("Needs to be object of type 'Date'")
     const jetztObj = new Date()
-  
+
     const jetzt = { year: jetztObj.getFullYear(), month: jetztObj.getMonth() + 1, day: jetztObj.getDate() }
     const damals = { year: damalsObj.getFullYear(), month: damalsObj.getMonth() + 1, day: damalsObj.getDate() }
-  
+
     let intervalDays = 0
     if (damals.day > jetzt.day) {
       const monthLength = new Date(damals.year, damals.month, 0).getDate()
@@ -14,7 +14,7 @@ function intervalToPast(damalsObj) {
     } else {
       intervalDays = jetzt.day - damals.day
     }
-  
+
     let intervalMonths = 0
     if (damals.month > jetzt.month) {
       const monthsTillYearEnd = 12 - damals.month
@@ -23,13 +23,13 @@ function intervalToPast(damalsObj) {
     } else {
       intervalMonths = jetzt.month - damals.month
     }
-  
+
     const intervalYears = jetzt.year - damals.year
-  
+
     return [intervalYears, intervalMonths, intervalDays]
   }
 
-function intervalToPastString(damalsObj) {
+export function intervalToPastString(damalsObj) {
     const [jahre, monate, tage] = intervalToPast(damalsObj)
 
     let result = []
@@ -51,6 +51,7 @@ function intervalToPastString(damalsObj) {
       result.push("1 Tag")
     }
 
-    const resultstring = result.length !== 0 ? result.reduce((acc, cur) => acc + ", " + cur) : "heute"
+    const resultstring = result.length !== 0 ? result.join(", ") : heute
+
     return resultstring
   }
