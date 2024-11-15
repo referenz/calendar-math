@@ -1,57 +1,57 @@
 function intervalToPast(damalsObj) {
-    if (!(damalsObj instanceof Date)) throw new TypeError("Needs to be object of type 'Date'")
-    const jetztObj = new Date()
-
-    const jetzt = { year: jetztObj.getFullYear(), month: jetztObj.getMonth() + 1, day: jetztObj.getDate() }
-    const damals = { year: damalsObj.getFullYear(), month: damalsObj.getMonth() + 1, day: damalsObj.getDate() }
-
-    let intervalDays = 0
-    if (damals.day > jetzt.day) {
-      const monthLength = new Date(damals.year, damals.month, 0).getDate()
-      const daysTillMonthEnd = monthLength - damals.day
-      intervalDays = daysTillMonthEnd + jetzt.day
-      damals.month++
-    } else {
-      intervalDays = jetzt.day - damals.day
-    }
-
-    let intervalMonths = 0
-    if (damals.month > jetzt.month) {
-      const monthsTillYearEnd = 12 - damals.month
-      intervalMonths = monthsTillYearEnd + jetzt.month
-      damals.year++
-    } else {
-      intervalMonths = jetzt.month - damals.month
-    }
-
-    const intervalYears = jetzt.year - damals.year
-
-    return [intervalYears, intervalMonths, intervalDays]
+  if (!(damalsObj instanceof Date) || isNaN(damalsObj)) {
+    throw new TypeError("Parameter muss ein gültiges Date-Objekt sein");
   }
+
+  if (damalsObj > new Date()) {
+    throw new Error("Das Datum liegt in der Zukunft.");
+  }
+
+  const jetztObj = new Date();
+
+  const jetzt = {
+    year: jetztObj.getFullYear(),
+    month: jetztObj.getMonth() + 1,
+    day: jetztObj.getDate(),
+  };
+
+  const damals = {
+    year: damalsObj.getFullYear(),
+    month: damalsObj.getMonth() + 1,
+    day: damalsObj.getDate(),
+  };
+
+  let intervalDays = 0;
+  if (damals.day > jetzt.day) {
+    const monthLength = new Date(damals.year, damals.month, 0).getDate();
+    const daysTillMonthEnd = monthLength - damals.day;
+    intervalDays = daysTillMonthEnd + jetzt.day;
+    damals.month++;
+  } else {
+    intervalDays = jetzt.day - damals.day;
+  }
+
+  let intervalMonths = 0;
+  if (damals.month > jetzt.month) {
+    const monthsTillYearEnd = 12 - damals.month;
+    intervalMonths = monthsTillYearEnd + jetzt.month;
+    damals.year++;
+  } else {
+    intervalMonths = jetzt.month - damals.month;
+  }
+
+  const intervalYears = jetzt.year - damals.year;
+
+  return [intervalYears, intervalMonths, intervalDays];
+}
 
 export function intervalToPastString(damalsObj) {
-    const [jahre, monate, tage] = intervalToPast(damalsObj)
+  const [jahre, monate, tage] = intervalToPast(damalsObj);
 
-    let result = []
-    if (jahre > 1) {
-      result.push(`${jahre} Jahre`)
-    } else if (jahre === 1) {
-      result.push("1 Jahr")
-    }
+  let result = [];
+  result.push(jahre > 1 ? `${jahre} Jahre` : `1 Jahr`);
+  result.push(monate > 1 ? `${monate} Monate` : "1 Monat");
+  result.push(tage > 1 ? `${tage} Tage` : "1 Tag");
 
-    if (monate > 1) {
-      result.push(`${monate} Monate`)
-    } else if (monate === 1) {
-      result.push("1 Monat")
-    }
-
-    if (tage > 1) {
-      result.push(`${tage} Tage`)
-    } else if (tage === 1) {
-      result.push("1 Tag")
-    }
-
-    const resultstring = result.length !== 0 ? result.join(", ") : heute
-
-    return resultstring
-  }
+  return result.length !== 0 ? result.join(", ") : "heute";
+}

@@ -3,18 +3,21 @@
   <head>
     <title>Calender-Math-Test</title>
     <script type="module">
-      import { intervalToPastString } from './calendar-math.js';
+      import { intervalToPastString } from "./calendar-math.js";
 
       document.addEventListener(
         "DOMContentLoaded",
-        () => (document.getElementsByTagName("h1")[0].innerHTML = intervalToPastString(new Date(2007, 10, 10)))
+        () => (document.getElementsByTagName("h1")[0].innerHTML = intervalToPastString(new Date(2007, 10, 10))),
       );
 
       /* deliberate TypeError */
       //document.addEventListener("DOMContentLoaded", () =>  document.getElementsByTagName('h1')[0].innerHTML = intervalToPastString('2010-02-05'));
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@600&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <h1></h1>
+    <h1 style="font-family: 'Dosis', serif;"></h1>
   </body>
 </html>
