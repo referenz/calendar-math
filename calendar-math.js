@@ -8,14 +8,9 @@
 /**
  * @param {Date} damalsObj - Vergangenes Datum, das ausgewertet werden soll.
  * @returns {[number, number, number]} Zeitspanne in Jahren, Monaten und Tagen
- * @throws {TypeError} Wenn `damalsObj` kein gültiges `Date` ist.
  * @throws {Error} Wenn `damalsObj` in der Zukunft liegt.
  */
 function intervalToPastLegacy(damalsObj) {
-  if (!(damalsObj instanceof Date) || isNaN(damalsObj)) {
-    throw new TypeError("Parameter muss ein gültiges Date-Objekt sein");
-  }
-
   if (damalsObj > new Date()) {
     throw new Error("Das Datum liegt in der Zukunft.");
   }
@@ -63,28 +58,16 @@ function intervalToPastLegacy(damalsObj) {
 /**
  * @param {Date} damalsObj - Vergangenes Datum, das ausgewertet werden soll.
  * @returns {string}
+ * @throws {TypeError} Wenn `damalsObj` kein gültiges `Date` ist.
+ * @throws {Error} Wenn `damalsObj` in der Zukunft liegt.
  */
 export function intervalToPastString(damalsObj) {
-  try {
-    const temporal = globalThis.Temporal;
-    if (!temporal?.PlainDate || !temporal?.Now) {
-      throw new Error("Temporal API not available");
-    }
+  if (!(damalsObj instanceof Date) || isNaN(damalsObj)) {
+    throw new TypeError("Parameter muss ein gültiges Date-Objekt sein");
+  }
 
-    console.log("Using Temporal API");
-
-    const damals = Temporal.PlainDate.from({
-      year: damalsObj.getFullYear(),
-      month: damalsObj.getMonth() + 1,
-      day: damalsObj.getDate(),
-    });
-    const jetzt =  Temporal.Now.plainDateISO()
-    if (damals.equals(jetzt)) return "heute";
-
-    const interval = jetzt.since(damals, { largestUnit: 'year', smallestUnit: 'day' });
-    return interval.toLocaleString('de', { style: 'long', roundingMode: 'trunc' });
-  } catch (error) {
-    console.error(error);
+  const temporal = globalThis.Temporal;
+  if (!temporal?.PlainDate || !temporal?.Now) {
     console.log('Falling back to legacy implementation');
 
     const [jahre, monate, tage] = intervalToPastLegacy(damalsObj);
@@ -97,4 +80,21 @@ export function intervalToPastString(damalsObj) {
 
     return result.length !== 0 ? result.join(", ") : "heute";
   }
+
+  console.log("Using Temporal API");
+
+  const damals = Temporal.PlainDate.from({
+    year: damalsObj.getFullYear(),
+    month: damalsObj.getMonth() + 1,
+    day: damalsObj.getDate(),
+  });
+  const jetzt = Temporal.Now.plainDateISO()
+
+  if (damals.equals(jetzt)) return "heute";
+  if (Temporal.PlainDate.compare(damals, jetzt) > 0) {
+    throw new Error("Das Datum liegt in der Zukunft.");
+  }
+
+  const interval = jetzt.since(damals, { largestUnit: 'year', smallestUnit: 'day' });
+  return interval.toLocaleString('de', { style: 'long', roundingMode: 'trunc' });
 }
